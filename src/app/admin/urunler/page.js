@@ -41,14 +41,11 @@ export default function UrunleriListele() {
                 product.category?.toLowerCase().includes(searchLower)
             );
         }
-
-        // Price filter
+        
         result = result.filter(product => 
             product.price >= priceRange.min && 
             product.price <= (priceRange.max === Infinity ? 999999 : priceRange.max)
         );
-
-        // Sorting
         switch (sortBy) {
             case 'name-asc':
                 result.sort((a, b) => a.name.localeCompare(b.name));

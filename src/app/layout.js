@@ -1,24 +1,22 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header";
-import { ClerkProvider } from "@clerk/nextjs";
+import './globals.css'
+import { Geist } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
 import { trTR } from '@clerk/localizations'
 import { getAllCategoryGroups } from '@/lib/prisma'
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import MessageBox from '@/components/MessageBox';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist-sans',
+})
 
 export const metadata = {
-  title: "Samsun Moda Cicekcilik",
-  description: "samsun moda cicekcilik",
-};
+  title: 'Moda Çiçekçi',
+  description: 'Moda Çiçekçi - Online Çiçek Siparişi',
+}
 
 export default async function RootLayout({ children }) {
   const categoryGroups = await getAllCategoryGroups();
@@ -26,13 +24,15 @@ export default async function RootLayout({ children }) {
   return (
     <ClerkProvider localization={trTR}>
       <html lang="tr">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistSans.variable} antialiased`}>
           <Header categoryGroups={categoryGroups} />
           <main className="min-h-screen bg-gray-50">
             {children}
           </main>
+          <Footer />
+          <MessageBox />
         </body>
       </html>
     </ClerkProvider>
-  );
+  )
 }

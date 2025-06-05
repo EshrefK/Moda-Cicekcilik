@@ -1,10 +1,16 @@
 import { getProduct, deleteProduct, updateProduct } from '@/lib/prisma';
 
-export async function GET(req, context) {
-    const params = await context.params;
-    const product = await getProduct(params.id);
-    if (!product) return new Response('Not found', { status: 404 });
-    return Response.json(product);
+export async function GET(request, context) {
+    const { id } = await context.params;
+    try {
+        const product = await getProduct(id);
+        if (!product) {
+            return Response.json({ error: "Product not found" }, { status: 404 });
+        }
+        return Response.json(product);
+    } catch (error) {
+        return Response.json({ error: "Failed to fetch product" }, { status: 500 });
+    }
 }
 
 export async function DELETE(req, context) {
@@ -19,21 +25,18 @@ export async function DELETE(req, context) {
 
 export async function PUT(req, context) {
     const params = await context.params;
-    try {
-        const data = await req.json();
-        const updateData = {
-            name: data.name,
-            price: data.price,
-            image: data.image,
-            description: data.description,
-            categories: {
-                set: data.categoryIds.map(id => ({ id }))
-            }
+
+    const data = await req.json();
+    const updateData = {
+        name: data.name,
+        price: data.price,
+        image: data.image,
+        description: data.description,
+        categories: {
+            set: data.categoryIds.map(id => ({ id }))
+        }
         };
         const updated = await updateProduct(params.id, updateData);
         return Response.json(updated);
-    } catch (e) {
-        console.error('Update error:', e);
-        return new Response(null, { status: 500 });
-    }
+    
 } 

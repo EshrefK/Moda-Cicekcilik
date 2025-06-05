@@ -15,13 +15,10 @@ export async function POST(request) {
     }
 
     if (previousImagePath) {
-        try {
-            const previousFilePath = path.join(process.cwd(), 'public', previousImagePath);
-            await unlink(previousFilePath);
-        } catch (error) {
-            // If file doesn't exist or can't be deleted, just log and continue
-            console.error('Error deleting previous image:', error);
-        }
+        
+        const previousFilePath = path.join(process.cwd(), 'public', previousImagePath);
+        await unlink(previousFilePath);
+        
     }
 
     const timestamp = Date.now();
@@ -35,7 +32,6 @@ export async function POST(request) {
     await writeFile(filepath, buffer);
 
     return NextResponse.json({ 
-        path: `/cicekler/${filename}`,
-        message: 'Resim başarıyla yüklendi'
+        path: `/cicekler/${filename}`
     });
 } 

@@ -1,9 +1,10 @@
-import { clerkClient } from "@clerk/nextjs/server"
+import { clerkClient, auth } from "@clerk/nextjs/server"
 import { removeRole, setRole } from "@/app/admin/actions"
 
 export default async function Kullanicilar() {
     const client = await clerkClient()
     const users = (await client.users.getUserList()).data;
+    const { userId: currentUserId } = await auth();
 
     return (
         <div className="pt-20 p-8 bg-[#FFF5E6] min-h-screen">
@@ -35,46 +36,56 @@ export default async function Kullanicilar() {
                                 </div>
                                 
                                 <div className="flex items-center gap-2">
-                                    <form action={setRole}>
-                                        <input type="hidden" name="userId" value={user.id} />
-                                        <input type="hidden" name="role" value="admin" />
-                                        <button 
-                                            type="submit"
-                                            className={`px-4 py-2 rounded-md transition-colors ${
-                                                user.publicMetadata?.role === 'admin' 
-                                                    ? 'bg-[#8B0000] text-white' 
-                                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                            }`}
-                                        >
-                                            Admin
-                                        </button>
-                                    </form>
-                                    <form action={setRole}>
-                                        <input type="hidden" name="userId" value={user.id} />
-                                        <input type="hidden" name="role" value="user" />
-                                        <button 
-                                            type="submit"
-                                            className={`px-4 py-2 rounded-md transition-colors ${
-                                                user.publicMetadata?.role === 'user' 
-                                                    ? 'bg-[#8B0000] text-white' 
-                                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                            }`}
-                                        >
-                                            Kullanıcı
-                                        </button>
-                                    </form>
+                                    {user.id === currentUserId ? (
+                                        <div className="text-red-600 font-medium">Kendi rolünüzü değiştiremezsiniz</div>
+                                    ) : (
+                                        <>
+                                            <form action={setRole}>
+                                                <input type="hidden" name="userId" value={user.id} />
+                                                <input type="hidden" name="role" value="admin" />
+                                                <button 
+                                                    type="submit"
+                                                    className={`px-4 py-2 rounded-md transition-colors ${
+                                                        user.publicMetadata?.role === 'admin' 
+                                                            ? 'bg-[#8B0000] text-white' 
+                                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                    }`}
+                                                >
+                                                    Admin
+                                                </button>
+                                            </form>
+                                            <form action={setRole}>
+                                                <input type="hidden" name="userId" value={user.id} />
+                                                <input type="hidden" name="role" value="user" />
+                                                <button 
+                                                    type="submit"
+                                                    className={`px-4 py-2 rounded-md transition-colors ${
+                                                        user.publicMetadata?.role === 'user' 
+                                                            ? 'bg-[#8B0000] text-white' 
+                                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                    }`}
+                                                >
+                                                    Kullanıcı
+                                                </button>
+                                            </form>
+                                        </>
+                                    )}
                                 </div>
                                 
                                 <div className="flex items-center">
-                                    <form action={removeRole}>
-                                        <input type="hidden" name="userId" value={user.id} />
-                                        <button 
-                                            type="submit"
-                                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
-                                        >
-                                            Rol Kaldır
-                                        </button>
-                                    </form>
+                                    {user.id === currentUserId ? (
+                                        <div className="text-red-600 font-medium">Kendi rolünüzü değiştiremezsiniz</div>
+                                    ) : (
+                                        <form action={removeRole}>
+                                            <input type="hidden" name="userId" value={user.id} />
+                                            <button 
+                                                type="submit"
+                                                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+                                            >
+                                                Rol Kaldır
+                                            </button>
+                                        </form>
+                                    )}
                                 </div>
                             </div>
                         ))}

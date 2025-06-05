@@ -25,7 +25,6 @@ export const seedProducts = async () => {
     }
 }
 
-
 export async function createProduct(data) {
     return await prisma.product.create({
         data: {
@@ -34,18 +33,35 @@ export async function createProduct(data) {
             price: data.price,
             image: data.image,
             categories: {
-                connect: data.categories
+                connect: data.categories.connect.map(id => ({ id }))
             }
-        }
-    })
-}
-
-export async function getProducts() {
-    return await prisma.product.findMany({
+        },
         include: {
             categories: true
         }
     })
+}
+
+export async function getProducts(query) {
+    if (query) {
+        return await prisma.product.findMany({
+            where: {
+                OR: [
+                    {name: {contains: query}},
+                    {description: {contains: query}},
+                    {categories: {some: {name: {contains: query}}}}
+                ]
+            },
+            include: {
+                categories: true
+            }
+        })
+    }
+    return await prisma.product.findMany({
+        include: {
+            categories: true
+        }
+    });
 }
 
 export async function getProduct(id) {
@@ -163,6 +179,21 @@ export async function deleteCategoryGroup(id) {
     });
 }
 
+export async function getProductsByCategory(slug) {
+    const category = await prisma.category.findUnique({
+        where: { slug },
+        include: {
+            products: {
+                include: {
+                    categories: true
+                }
+            }
+        }
+    });
+    
+    return category?.products || [];
+} 
+
 export async function getAllUsers() {
     return await prisma.user.findMany();
 }
@@ -199,5 +230,19 @@ export async function makeUserAdmin(email) {
     });
 }
 
- 
+export async function getUserInfo(userId) {
+    try {
+      const user = await clerkClient.users.getUser(userId);
+      return {
+        email: user.emailAddresses[0]?.emailAddress || 'Bilinmiyor',
+        username: user.username || user.firstName || 'Bilinmiyor',
+      };
+    } catch (err) {
+      console.error('Kullanıcı alınamadı:', err);
+      return {
+        email: 'Bilinmiyor',
+        username: 'Bilinmiyor',
+      };
+    }
+}
 

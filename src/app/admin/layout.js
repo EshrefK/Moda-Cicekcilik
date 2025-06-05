@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserGroupIcon, CubeIcon, PlusCircleIcon, TagIcon } from '@heroicons/react/24/outline';
+import { UserGroupIcon, CubeIcon, PlusCircleIcon, TagIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 import { TbBasketPlus } from "react-icons/tb";
 
 
@@ -36,6 +36,13 @@ export default function AdminLayout({ children }) {
                     >
                         <TagIcon className="w-5 h-5" />
                         Kategorileri Yönet
+                    </Link>
+                    <Link 
+                        href="/admin/messages"
+                        className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-[#8B0000] hover:bg-gray-50 rounded-md transition-all border-l-2 border-transparent hover:border-[#8B0000]"
+                    >
+                        <ChatBubbleLeftRightIcon className="w-5 h-5" />
+                        Mesajlar
                     </Link>
                 </nav>
             </div>

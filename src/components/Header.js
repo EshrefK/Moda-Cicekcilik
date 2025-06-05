@@ -83,7 +83,7 @@ export default function Header({ categoryGroups = [] }) {
 
                 <div className={`hidden md:block border-t border-red-200/50 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden' : 'h-auto'}`}>
                     <div className="flex justify-center space-x-8 py-3">
-                        <Link href="/katalog" className="text-red-700 hover:text-red-800 transition-colors duration-200">
+                        <Link href="/products" className="text-red-700 hover:text-red-800 transition-colors duration-200">
                             Tüm Ürünler
                         </Link>
                         {categoryGroups.map((group) => (
@@ -105,7 +105,7 @@ export default function Header({ categoryGroups = [] }) {
                                                 {group.categories.map((category) => (
                                                     <Link
                                                         key={category.id}
-                                                        href={`/katalog/${category.slug}`}
+                                                        href={`/products/category/${category.slug}`}
                                                         className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-md transition-colors duration-200"
                                                     >
                                                         {category.name}
@@ -136,7 +136,7 @@ export default function Header({ categoryGroups = [] }) {
                                 )}
                             </SignedIn>
                             <Link 
-                                href="/katalog" 
+                                href="/products" 
                                 className="block px-3 py-2 text-red-700 hover:text-red-800 transition-colors duration-200"
                             >
                                 Tüm Ürünler
@@ -155,7 +155,7 @@ export default function Header({ categoryGroups = [] }) {
                                             {group.categories.map((category) => (
                                                 <Link
                                                     key={category.id}
-                                                    href={`/katalog/${category.slug}`}
+                                                    href={`/products/category/${category.slug}`}
                                                     className="block px-3 py-2 text-sm text-red-700 hover:text-red-800 transition-colors duration-200 hover:bg-red-50/50 rounded-md"
                                                 >
                                                     {category.name}
