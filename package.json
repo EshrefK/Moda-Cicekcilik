@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && next build --no-lint"
+    "vercel-build": "prisma generate && prisma db push && next build --no-lint"
   },
   "dependencies": {
     "@clerk/localizations": "^3.16.1",
