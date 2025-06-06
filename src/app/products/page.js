@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ProductCards from "@/components/ProductCards";
 import ProductFilters from "@/components/ProductFilters";
 import { useSearchParams } from "next/navigation";
 
-export default function ProductsPage() {
+function ProductList() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filters, setFilters] = useState({ minPrice: null, maxPrice: null });
     const [sortBy, setSortBy] = useState('name-asc');
-    const params = useSearchParams();
-    const category = params?.get('category');
-    const search = params?.get('search');
+    const searchParams = useSearchParams();
+    const category = searchParams?.get('category');
+    const search = searchParams?.get('search');
 
     useEffect(() => {
         async function loadProducts() {
@@ -83,6 +83,14 @@ export default function ProductsPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ProductsPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProductList />
+        </Suspense>
     );
 }
 

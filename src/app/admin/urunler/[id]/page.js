@@ -3,6 +3,8 @@
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
+import Image from 'next/image';
+import Link from 'next/link';
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -134,10 +136,11 @@ export default function AdminProductDetailPage({ params }) {
                     <div className="flex flex-col items-center gap-2">
                         {form.image ? (
                             <div className="relative w-56 h-56">
-                                <img 
+                                <Image 
                                     src={form.image}
                                     alt={form.name} 
-                                    className="w-full h-full object-cover border-2 border-gray-200" 
+                                    fill
+                                    className="object-cover border-2 border-gray-200" 
                                 />
                             </div>
                         ) : (

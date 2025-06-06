@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { getProducts } from "@/lib/prisma";
 
 export default function ProductPage({ params }) {
     const searchParams = useSearchParams();
@@ -26,7 +25,8 @@ export default function ProductPage({ params }) {
         async function handleSearch() {
             const query = searchParams.get("search");
             if (query) {
-                const results = await getProducts(query);
+                const res = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
+                const results = await res.json();
                 setSearchResults(results);
             }
         }
@@ -59,13 +59,14 @@ export default function ProductPage({ params }) {
     return (
   <div className="container px-5 py-20 mx-auto pt-50">
     <div className="lg:w-4/5 mx-auto flex flex-wrap">
-      <Image 
-        alt={product.name} 
-        className="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" 
-        src={product.image}
-        width={400}
-        height={400}
-      />
+      <div className="relative w-full h-96">
+        <Image 
+          src={product.image}
+          alt={product.name}
+          fill
+          className="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+        />
+      </div>
       <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 mt-15">{product.name}</h1>
         <div className="flex mb-10">

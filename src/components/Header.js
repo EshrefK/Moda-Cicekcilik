@@ -4,6 +4,7 @@ import Link from 'next/link'
 import SearchBar from '@/components/SearchBar'
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton, useUser } from '@clerk/nextjs'
 import { ShieldCheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 
 export default function Header({ categoryGroups = [] }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,10 +37,13 @@ export default function Header({ categoryGroups = [] }) {
                     <div className="flex-shrink-0">
                         <Link href="/">
                             <div className="flex items-center">
-                                <div className="relative">
-                                    <img src="/samsunmodacicekciliklogo11.png" alt="logo" className="w-32 h-auto" />
-                                </div>
-                                <span className="ml-2 text-2xl font-bold text-red-700">Moda Çiçekçilik</span>
+                                <Image 
+                                    src="/samsunmodacicekciliklogo11.png"
+                                    alt="Moda Çiçekçilik"
+                                    width={150}
+                                    height={50}
+                                    className="h-12 w-auto"
+                                />
                             </div>
                         </Link>
                     </div>

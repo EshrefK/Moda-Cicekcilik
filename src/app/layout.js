@@ -5,7 +5,6 @@ import { trTR } from '@clerk/localizations'
 import { getAllCategoryGroups } from '@/lib/prisma'
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MessageBox from '@/components/MessageBox';
 
 const geistSans = Geist({
   subsets: ['latin'],
@@ -30,7 +29,7 @@ export default async function RootLayout({ children }) {
             {children}
           </main>
           <Footer />
-          <MessageBox />
+
         </body>
       </html>
     </ClerkProvider>
