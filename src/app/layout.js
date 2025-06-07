@@ -2,7 +2,7 @@ import './globals.css'
 import { Geist } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { trTR } from '@clerk/localizations'
-import HeaderWrapper from '@/components/HeaderWrapper';
+import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const geistSans = Geist({
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider localization={trTR}>
       <html lang="tr">
         <body className={`${geistSans.variable} antialiased`}>
-          <HeaderWrapper />
+          <Header />
           <main className="min-h-screen bg-gray-50">
             {children}
           </main>

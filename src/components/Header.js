@@ -6,10 +6,11 @@ import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton, useUser } 
 import { ShieldCheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 
-export default function Header({ categoryGroups = [] }) {
+export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null);
+    const [categoryGroups, setCategoryGroups] = useState([]);
     const { user } = useUser();
     const isAdmin = user?.publicMetadata?.role === 'admin';
 
@@ -31,6 +32,22 @@ export default function Header({ categoryGroups = [] }) {
                 window.removeEventListener('scroll', handleScroll);
             }
         };
+    }, []);
+
+    useEffect(() => {
+        const fetchCategoryGroups = async () => {
+            try {
+                const response = await fetch('/api/categories/groups');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCategoryGroups(data);
+                }
+            } catch (error) {
+                console.log('Failed to fetch category groups:', error);
+            }
+        };
+
+        fetchCategoryGroups();
     }, []);
 
     const handleDropdownClick = (groupId) => {
