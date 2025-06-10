@@ -26,7 +26,7 @@ model Product {
   name        String
   description String?
   price       Float
-  image       String      // Stores the cloud storage URL of the image
+  image       String      
   categories  Category[]  @relation("ProductCategories")
   productCategories ProductCategory[]
   createdAt   DateTime    @default(now())
