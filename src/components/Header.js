@@ -50,6 +50,12 @@ export default function Header() {
         fetchCategoryGroups();
     }, []);
 
+    useEffect(() => {
+        const closeDropdown = () => setOpenDropdown(null);
+        if (openDropdown) document.addEventListener('click', closeDropdown);
+        return () => document.removeEventListener('click', closeDropdown);
+    }, [openDropdown]);
+
     const handleDropdownClick = (groupId) => {
         setOpenDropdown(openDropdown === groupId ? null : groupId);
     };
